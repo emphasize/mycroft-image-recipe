@@ -75,4 +75,11 @@ ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
 sed -i "s|ubuntu|neon|g" /etc/hosts
 sed -i "s|ubuntu|neon|g" /etc/hostname
 
+# Add 2Gb swap file
+sudo fallocate -l 2G /swapfile
+sudo chmod 660 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+
 echo "Core Configuration Complete"
