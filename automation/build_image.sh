@@ -60,7 +60,7 @@ xz --decompress -T0 ubuntu_22_04.img.xz -v --keep && echo "Decompressed Image"
 
 # Get Build info
 cd "${BASE_DIR}" || exit 10
-meta="$(python get_metadata.py)"
+meta="$(python3 get_metadata.py)"
 echo "${meta}">"${build_dir}/meta.json"
 echo "Got Build Info"
 

@@ -40,10 +40,14 @@ fi
 
 BASE_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 recipe_dir="${BASE_DIR}/.."
+# Get Build info
+meta="$(python3 get_metadata.py)"
+echo "${meta}">"${build_dir}/meta.json"
+
 cd "${build_dir}" || exit 10
 
-mkdir boot
-mkdir mnt
+mkdir -p boot
+mkdir -p mnt
 
 echo "Copying Boot Overlay Files"
 # RaspiOS Lite=4194304
