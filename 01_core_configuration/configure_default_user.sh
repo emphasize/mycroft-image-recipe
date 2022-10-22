@@ -85,11 +85,14 @@ usermod -aG i2c ${default_username}
 usermod -aG dialout ${default_username}
 usermod -aG netdev ${default_username}
 
+# Set Locale
+sudo locale-gen de_DE.UTF-8
+sudo update-locale LANG=de_DE.UTF-8 LC_MESSAGES=POSIX
 
 # Set TZ
-echo "America/Los_Angeles" > /etc/timezone
+echo "Europe/Berlin" > /etc/timezone
 rm /etc/localtime
-ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # TODO: Can below be simplified?
 if [ "${dist}" == 'Ubuntu' ]; then

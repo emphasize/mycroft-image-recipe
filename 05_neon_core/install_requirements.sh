@@ -43,14 +43,14 @@ apt install -y curl
 curl https://forslund.github.io/mycroft-desktop-repo/mycroft-desktop.gpg.key | apt-key add - 2> /dev/null && \
 echo "deb http://forslund.github.io/mycroft-desktop-repo bionic main" | tee /etc/apt/sources.list.d/mycroft-desktop.list
 apt update
-apt install -y sox gcc libfann-dev swig libssl-dev portaudio19-dev git libpulse-dev mimic \
+apt install -y sox gcc libsox-fmt-mp3 ffmpeg libfann-dev swig libssl-dev portaudio19-dev git libpulse-dev mimic \
     espeak-ng g++ wireless-tools plasma-nm unzip ffmpeg || exit 1
 
 # Cleanup apt caches
 rm -rf /var/cache/apt/archives/*
 
 # Configure venv for deepspeech compat.
-python3.7 -m venv "/home/neon/venv" || exit 10
+python3 -m venv "/home/neon/venv" || exit 10
 . /home/neon/venv/bin/activate
 pip install --upgrade pip wheel
 
@@ -70,19 +70,24 @@ rm -rf /root/.cache/pip
 
 # Download model files
 mkdir -p /home/neon/.local/share/neon
-wget -O /home/neon/.local/share/neon/vosk-model-small-en-us-0.15.zip https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
+wget -O /home/neon/.local/share/neon/vosk-model-small-de-zamia-0.3.zip https://alphacephei.com/vosk/models/vosk-model-small-de-zamia-0.3.zip
 cd /home/neon/.local/share/neon || exit 10
-unzip vosk-model-small-en-us-0.15.zip
-rm vosk-model-small-en-us-0.15.zip
+unzip vosk-model-small-de-zamia-0.3.zip
+rm vosk-model-small-de-zamia-0.3.zip
+
+# Additional requirements (Workaround)
+# Homescreen (instead of Lite)
+pip uninstall --yes skill-ovos-homescreen
+pip install git+https://github.com/OpenVoiceOS/skill-ovos-homescreen
+# Those should be pulled, but ain't
+pip install ovos-ww-plugin-precise
+pip install ovos-ww-plugin-pocketsphinx
+pip install ovos-tts-plugin-google-tx
+pip install ovos-stt-plugin-selene
 
 export XDG_CONFIG_HOME="/home/neon/.config"
 export XDG_DATA_HOME="/home/neon/.local/share"
 export XDG_CACHE_HOME="/home/neon/.cache"
-
-# Init TTS model
-neon-audio init-plugin || echo "Failed to init TTS"
-# Init STT model
-neon-speech init-plugin || echo "Failed to init STT"
 
 mkdir /home/neon/logs
 
