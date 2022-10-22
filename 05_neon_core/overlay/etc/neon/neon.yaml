@@ -2,22 +2,26 @@ play_wav_cmdline: "play %1"
 play_mp3_cmdline: "play %1"
 play_ogg_cmdline: "play %1"
 tts:
-  module: coqui
+  module: ovos-tts-plugin-google-tx
   fallback_module: ovos-tts-plugin-mimic
 Audio:
   backends:
     OCP:
       type: ovos_common_play
       active: true
-      dbus_type: system
+      dbus_type: 
+    vlc:
+      type: ovos_vlc
+      active: true
+  default-backend: OCP
 audio_parsers:
   blacklist:
   - gender
 stt:
-  module: deepspeech_stream_local
+  module: ovos-stt-plugin-selene
   fallback_module: ovos-stt-plugin-vosk
   ovos-stt-plugin-vosk:
-    model: /home/neon/.local/share/neon/vosk-model-small-en-us-0.15
+    model: /home/neon/.config/neon/vosk-model-small-de-zamia-0.3
 confirm_listening: true
 listener:
   VAD:
@@ -26,10 +30,21 @@ listener:
   mute_during_output: true
   instant_listen: true
 hotwords:
-  wake_up:
-    active: false
+  hey mycroft:
+    module: precise
+    active: true
+    phonemes: "HH EY . M AY K R AO F T"
+    threshold: 1e-90
+    lang: en-us
+  wake up:
+    module: pocketsphinx
+    active: true
+    phonemes: "W EY K . AH P"
+    threshold: 1e-20
+    lang: en-us
   hey_neon:
-    model_folder: /home/neon/.local/share/neon/vosk-model-small-en-us-0.15
+    active: false
+    model_folder: /home/neon/.local/share/neon/vosk-model-small-de-zamia-0.3
 sounds:
   start_listening: snd/start_listening.wav
   end_listening: snd/end_listening.wav
