@@ -50,7 +50,7 @@ apt install -y sox gcc libsox-fmt-mp3 ffmpeg libfann-dev swig libssl-dev portaud
 rm -rf /var/cache/apt/archives/*
 
 # Configure venv for deepspeech compat.
-python3 -m venv "/home/neon/venv" || exit 10
+python3.7 -m venv "/home/neon/venv" || exit 10
 . /home/neon/venv/bin/activate
 pip install --upgrade pip wheel
 
